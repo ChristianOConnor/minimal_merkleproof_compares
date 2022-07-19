@@ -78,9 +78,11 @@ class MerkleTools(object):
         new_level = []
         for l, r in zip(self.levels[0][0:N:2], self.levels[0][1:N:2]):
             if self.does_use_ethutil:
-                new_level.append(self.hash_function(['bytes'], [l+r]))
+                srt_here = sorted([l,r])
+                new_level.append(self.hash_function(['bytes'], [srt_here[0]+srt_here[1]]))
             else:
-                new_level.append(self.hash_function(l+r).digest())
+                srt_here = sorted([l,r])
+                new_level.append(self.hash_function(srt_here[0]+srt_here[1]).digest())
         if solo_leave is not None:
             new_level.append(solo_leave)
         self.levels = [new_level, ] + self.levels  # prepend new level
